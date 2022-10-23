@@ -30,25 +30,10 @@ const babelOptions = (preset) => {
     return opts;
 };
 
-const jsLoaders = () => {
-    const loaders = [
-        {
-            loader: 'babel-loader',
-            options: babelOptions(),
-        },
-    ];
-
-    if (isDev) {
-        loaders.push('eslint-loader');
-    }
-
-    return loaders;
-};
-
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
-    entry: ['@babel/polyfill', './index.jsx'],
+    entry: ['@babel/polyfill', './index.tsx'],
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build'),
@@ -57,10 +42,12 @@ module.exports = {
         alias: {
             '@': path.resolve(__dirname, 'src'),
         },
+        extensions: ['.ts', '.tsx', '.js'],
     },
     optimization: optimization(),
 
     devServer: {
+        historyApiFallback: true,
         port: 3000,
     },
     devtool: isDev ? 'source-map' : '',
@@ -89,21 +76,18 @@ module.exports = {
                 use: ['file-loader'],
             },
             {
-                test: /\.js$/,
+                test: /\.(ts|js)x?$/,
                 exclude: /node_modules/,
-                use: jsLoaders(),
-            },
-            {
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                options: babelOptions('@babel/preset-typescript'),
-            },
-            {
-                test: /\.jsx$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                options: babelOptions(['@babel/preset-react', { runtime: 'automatic' }]),
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-react',
+                            '@babel/preset-typescript',
+                        ],
+                    },
+                },
             },
             {
                 test: /(\.less)$/,
