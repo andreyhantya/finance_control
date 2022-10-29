@@ -1,0 +1,10 @@
+@import '~normalize.css';
+@import 'Rubic.css';
+
+* {
+    font-family: 'Rubic', sans-serif;
+}
+
+body {
+    background-color: #eee;
+}
