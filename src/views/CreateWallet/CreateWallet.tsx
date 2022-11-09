@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FormButton from '../../components/Form/Button/FormButton';
 import FormSelect from '../../components/Form/Select/Select';
 import FormTextField from '../../components/Form/TextField/FormTextField';
-import { CreateWalletWrapper, StyledForm } from './StyledCreateWallet';
-import { Formik } from 'formik';
+import { CreateWalletWrapper, FormWrapper } from './StyledCreateWallet';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { Formik, Field } from 'formik';
+import { createWallet, walletData } from '../../store/slices/walletDataSlice'
+import { MenuItem, NativeSelect, InputLabel, FormControl } from '@mui/material';
 
 const CreateWallet = () => {
+    const dispatch = useAppDispatch();
+    const [walletIdCount, setWalletIdCount] = useState(0);
     const currencies = [
         {
             value: 'USD',
@@ -20,61 +25,89 @@ const CreateWallet = () => {
     ];
 
     const clickButton = () => {
-        console.log(123123);
+        
     };
+
+    const createWallett = (data) => {
+        const wallet = {
+            name: data.walletName,
+            currency: data.currency,
+            date: JSON.stringify(new Date),
+            sum: data.walletStartSum,
+            id: `wallet-${walletIdCount}`
+        }
+
+        setWalletIdCount(walletIdCount + 1)
+        dispatch(createWallet(wallet))
+
+        console.log('wallet', wallet)
+
+    }
 
     return (
         <CreateWalletWrapper>
             <h2>Создайте кошелёк</h2>
-            <StyledForm>
-                <FormSelect selectItemsData={currencies} label="Валюта" />
-            </StyledForm>
+            <FormWrapper>
             <Formik
-                initialValues={{ email: '', password: '' }}
+                initialValues={{walletName: '', currency: 'USD', walletStartSum: 0 }}
                 onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
+                       setTimeout(() => {
                         alert(JSON.stringify(values, null, 2));
                         setSubmitting(false);
+                        createWallett(values);
                     }, 400);
+                  
                 }}>
                 {({
                     values,
                     errors,
                     touched,
+
+                    
                     handleChange,
                     handleBlur,
                     handleSubmit,
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-                        <FormTextField
-                            placeholder="Текст"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.email}
-                            id="text-input"
-                        />
 
-                        {errors.email && touched.email && errors.email}
-                        <input
-                            type="password"
-                            name="password"
+                        <FormControl  fullWidth={true}>
+                            <Field name="currency" component={FormSelect}>
+                            {currencies.map((elem) =>(
+                                <MenuItem value={elem.value}>
+                                    {elem.value}
+                                </MenuItem>
+                            ))}   
+                            </Field>
+                        </FormControl>
+                        <FormTextField
+                            width='100%'
+                            placeholder="Название кошелька"
+                            onChange={handleChange}
+                            margin={0}
+                            onBlur={handleBlur}
+                            id="walletName"
+                        />
+                        <FormTextField
+                            width='100%'
+                            margin={0}
+                            placeholder="Начальная сумма"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.password}
+                            id="walletStartSum"
                         />
-                        {errors.password && touched.password && errors.password}
-                        <button type="submit" disabled={isSubmitting}>
-                            Submit
-                        </button>
+                        
+                       
                         <FormButton
                             type="submit"
                             value="Готово"
+                            spacing={3}
                             handlerClick={() => clickButton()}
                         />
                     </form>
                 )}
             </Formik>
+            </FormWrapper>
         </CreateWalletWrapper>
     );
 };

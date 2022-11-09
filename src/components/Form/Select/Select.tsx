@@ -3,6 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Formik, Form, Field } from "formik";
 
 interface IItem {
     value: string;
@@ -16,37 +17,36 @@ interface IFormSelectProps {
     margin?: number;
     size?: 'small' | 'medium';
     selectItemsData: IItem[];
+    children: any;
+    field: any
+    form: any
 }
 
 const FormSelect = ({
     label,
+    field,
+    form,
     selectItemsData,
     minWudth = 110,
+    children,
     margin = 1,
-    size = 'small',
+    size = 'medium',
 }: IFormSelectProps) => {
-    const [SelectedValue, setSelectedValue] = React.useState('');
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setSelectedValue(event.target.value);
-    };
-
+  
+    
+    const { name, value } = field;
+    const { setFieldValue } = form;
     return (
-        <FormControl sx={{ m: margin, minWidth: minWudth }} size={size}>
-            <InputLabel id="demo-select-small">{label}</InputLabel>
-            <Select
-                labelId="demo-select-small"
-                id="demo-select-small"
-                value={SelectedValue}
-                label={label}
-                onChange={handleChange}>
-                {selectItemsData.map((elem) => (
-                    <MenuItem key={elem.id} value={elem.value}>
-                        {elem.label}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+      <Select
+        name={name}
+        value={value}
+        placeholder='Выберите цвет'
+        onChange={e => {
+          setFieldValue(name, e.target.value);
+        }}
+      >
+        {children}
+      </Select>
     );
 };
 

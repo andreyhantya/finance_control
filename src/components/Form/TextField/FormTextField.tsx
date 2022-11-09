@@ -4,7 +4,8 @@ import TextField from '@mui/material/TextField';
 
 interface IFormTextFieldProps {
     placeholder: string;
-    onChange: () => React.ChangeEvent<HTMLInputElement>;
+    onChange: (e: React.ChangeEvent<any>) => void;
+    onBlur: (e: React.FocusEvent<any>) => void;
     id: string;
     variant?: 'outlined' | 'filled' | 'standard';
     width?: string;
@@ -31,7 +32,7 @@ const FormTextField = ({
             autoComplete={autoComplete}>
             <TextField
                 id={id}
-                onChange={(e) => onChange(e)}
+                onChange={onChange}
                 label={placeholder}
                 variant={variant}
             />
