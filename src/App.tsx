@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import CreateWallet from './views/CreateWallet/CreateWallet';
-import MyWallets from './views/MyWallets/MyWallets.jsx';
+import MyWallets from './views/MyWallets/MyWallets';
 import NotFoundPage from './views/NotFoundPage/NotFoundPage.jsx';
 import Header from './components/Header/Header';
 import CategoryCard from './components/Categories/CategoryCard/CategoryCard';

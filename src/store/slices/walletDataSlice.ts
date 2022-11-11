@@ -1,7 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
-
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
 
 interface IExpense {
     sum: number;
@@ -19,7 +18,7 @@ interface IIncoming {
 
 interface IWallet {
     name: string;
-    sum: number;
+    sum: nustring;
     expence?: IExpense[];
     incoming?: IIncoming[];
     currency: string;
@@ -32,25 +31,30 @@ interface IWallets {
 }
 
 const initialState: IWallets = {
-    wallets: []
-}
+    wallets: [
+        {
+            name: 'My wallet',
+            sum: 0,
+            currency: 'USD',
+            date: new Date(),
+            id: 'string',
+        },
+    ],
+};
 
 export const walletsSlice = createSlice({
     name: 'walles',
     initialState,
     reducers: {
         createWallet: (state, action: PayloadAction<number>) => {
-            console.log('actions', action)
-            console.log('state', state)
-            state.wallets.push(action.payload)
-            console.log(state)
-        }
-    }
-})
+            state.wallets.push(action.payload);
+            console.log(state);
+        },
+    },
+});
 
-
-export const {createWallet} = walletsSlice.actions;
-export const walletData = (state: RootState) => state
+export const { createWallet } = walletsSlice.actions;
+export const walletData = (state: IWallets) => state.wallets;
 console.log('walletData', walletData);
 
-export default walletsSlice.reducer
+export default walletsSlice.reducer;
