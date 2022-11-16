@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 interface IExpense {
-    sum: number;
+    expense: number;
     category: string;
-    date: Date;
+    date: string;
     walletName: string;
 }
 
@@ -18,11 +18,11 @@ interface IIncoming {
 
 interface IWallet {
     name: string;
-    sum: nustring;
-    expence?: IExpense[];
+    sum: number;
+    expense?: IExpense[];
     incoming?: IIncoming[];
     currency: string;
-    date: Date;
+    date: string;
     id: string;
 }
 
@@ -33,28 +33,46 @@ interface IWallets {
 const initialState: IWallets = {
     wallets: [
         {
-            name: 'My wallet',
-            sum: 0,
+            name: 'Test wallet',
+            sum: 200,
             currency: 'USD',
-            date: new Date(),
+            date: JSON.stringify(new Date()),
             id: 'string',
+            expense: [],
         },
     ],
 };
 
-export const walletsSlice = createSlice({
-    name: 'walles',
+const walletsSlice = createSlice({
+    name: 'wallets',
     initialState,
     reducers: {
-        createWallet: (state, action: PayloadAction<number>) => {
+        createWallet: (state, action: PayloadAction<IWallet>) => {
+            console.log('state', state);
+
             state.wallets.push(action.payload);
-            console.log(state);
+        },
+
+        addExpense: (state, action: PayloadAction<IWallet>) => {
+            const { walletName, expense } = action.payload;
+            console.log('state.wallets', action.payload);
+
+            current(state).wallets.map((elem, idx) => {
+                if (elem.name === walletName) {
+                    const sum: number = elem.sum - Number(expense);
+
+                    state.wallets[idx].expense.push(action.payload);
+                    state.wallets[idx].sum = sum;
+                }
+            });
         },
     },
 });
 
-export const { createWallet } = walletsSlice.actions;
+export const { createWallet, addExpense } = walletsSlice.actions;
 export const walletData = (state: IWallets) => state.wallets;
-console.log('walletData', walletData);
+export const walletDataSelector = {
+    getWalletData: (state: IWallets) => state,
+};
 
-export default walletsSlice.reducer;
+export default walletsSlice;

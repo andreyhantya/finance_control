@@ -11,7 +11,12 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "strictNullChecks": false,
-        "types": ["@types/styled-components"]
+        "types": ["@types/styled-components"],
+        "baseUrl": ".",
+        "paths": {
+            "@src/*": ["src/*"]
+        }
     },
-    "exclude": ["node_modules", ".npm"]
+    "exclude": ["node_modules", ".npm"],
+    "include": ["src/**/*", "tests/**/*"]
 }

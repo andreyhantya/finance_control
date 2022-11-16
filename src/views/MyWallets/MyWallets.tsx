@@ -1,17 +1,18 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { walletData } from '../../store/slices/walletDataSlice';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { walletData, walletDataSelector } from '@src/store/slices/walletDataSlice';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { MyWalletsWrapper, AccordionWrapper, WalletsInfo } from './StyledMyWallets';
-const MyWallets = () => {
-    console.log(123);
+import AddExpenseForm from '../CreateWallet/AddExpense/AddExpenseForm';
 
-    const wallet = useAppSelector(walletData);
+const MyWallets = () => {
+    const wallet = useAppSelector(walletDataSelector.getWalletData);
     console.log('wallet', wallet);
+
     return (
         <MyWalletsWrapper>
             <AccordionWrapper>
@@ -23,10 +24,7 @@ const MyWallets = () => {
                         <Typography>Добавить расход</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                            malesuada lacus ex, sit amet blandit leo lobortis eget.
-                        </Typography>
+                        <AddExpenseForm />
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>
@@ -101,12 +99,22 @@ const MyWallets = () => {
                     </AccordionDetails>
                 </Accordion>
             </AccordionWrapper>
+
             <WalletsInfo>
-                <p>Кошельки</p>
-                <p>USD</p>
-                <p>Название</p>
-                <p>Остаток</p>
-                <p>Расходы на месяц: 300</p>
+                {wallet.wallets.map((elem, idx) => {
+                    return (
+                        <div key={idx}>
+                            <p>
+                                Название:{' '}
+                                <b>
+                                    {elem.name} ({elem.currency})
+                                </b>
+                            </p>
+                            <p>Остаток: {elem.sum}</p>
+                            <p>Расходы на месяц: 300</p>
+                        </div>
+                    );
+                })}
             </WalletsInfo>
         </MyWalletsWrapper>
     );

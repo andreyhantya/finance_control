@@ -23,20 +23,15 @@ const FormTextField = ({
     id,
 }: IFormTextFieldProps) => {
     return (
-        <Box
-            component="form"
-            sx={{
-                '& > :not(style)': { m: margin, width: width },
-            }}
-            noValidate
-            autoComplete={autoComplete}>
-            <TextField
-                id={id}
-                onChange={onChange}
-                label={placeholder}
-                variant={variant}
-            />
-        </Box>
+        // <Box
+        //     component="form"
+        //     sx={{
+        //         '& > :not(style)': { m: margin, width: width },
+        //     }}
+        //     noValidate
+        //     autoComplete={autoComplete}>
+        <TextField id={id} onChange={onChange} label={placeholder} variant={variant} />
+        // </Box>
     );
 };
 

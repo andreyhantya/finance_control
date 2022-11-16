@@ -40,7 +40,7 @@ module.exports = {
     },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src'),
+            '@src': path.resolve(__dirname, 'src'),
         },
         extensions: ['.ts', '.tsx', '.js'],
     },
@@ -50,7 +50,7 @@ module.exports = {
         historyApiFallback: true,
         port: 3000,
     },
-    devtool: isDev ? 'source-map' : '',
+    devtool: 'hidden-source-map',
     plugins: [
         new HtmlWebpackPlugin({
             template: '../public/index.html',
@@ -83,7 +83,7 @@ module.exports = {
                     options: {
                         presets: [
                             '@babel/preset-env',
-                            ["@babel/preset-react", {"runtime": "automatic"}],
+                            ['@babel/preset-react', { runtime: 'automatic' }],
                             '@babel/preset-typescript',
                         ],
                     },

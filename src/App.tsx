@@ -9,12 +9,8 @@ import CategoryCard from './components/Categories/CategoryCard/CategoryCard';
 const App = () => {
     return (
         <>
-            <Header>
-                <Link to="/">Home</Link>
-                <Link to="/createwallet">Create Wallet</Link>
-                <Link to="/MyWallets">My Wallets</Link>
-            </Header>
-            <CategoryCard />
+            <Header />
+
             <Routes>
                 <Route path="/createwallet" element={<CreateWallet />} />
                 <Route path="/MyWallets" element={<MyWallets />} />

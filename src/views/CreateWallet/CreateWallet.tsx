@@ -37,8 +37,6 @@ const CreateWallet = () => {
 
         setWalletIdCount(walletIdCount + 1);
         dispatch(createWallet(wallet));
-
-        console.log('wallet', wallet);
     };
 
     return (
