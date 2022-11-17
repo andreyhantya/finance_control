@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledHeader = styled.header`
     padding: 5px;
-    background-color: #fff;
+    background-color: #283655;
 `;
 
 export const StyledMenu = styled.ul`
@@ -21,6 +21,6 @@ export const MenuItem = styled.li`
         font-family: 'Roboto', sans-serif;
         text-transform: uppercase;
         font-weight: bold;
-        color: black;
+        color: #d0e1f9;
     }
 `;

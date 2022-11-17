@@ -7,6 +7,7 @@ export const MyWalletsWrapper = styled.div`
     padding: 40px;
     display: flex;
     justify-content: space-between;
+    background-color: #4d648d;
 `;
 
 export const AccordionWrapper = styled.div`
@@ -16,8 +17,8 @@ export const AccordionWrapper = styled.div`
 export const WalletsInfo = styled.div`
     width: 300px;
     height: 200px;
-    background-color: #fff;
-    border: 1px solid black;
+    background-color: #d0e1f9;
+    border: 2px solid #1e1f26;
     border-radius: 5px;
     padding: 20px;
 `;

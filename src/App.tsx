@@ -16,9 +16,7 @@ const App = () => {
                 <Route path="/MyWallets" element={<MyWallets />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
-            <div className="q">
-                <div className="block">asdasdas</div>
-            </div>
+            <div className="q"></div>
         </>
     );
 };

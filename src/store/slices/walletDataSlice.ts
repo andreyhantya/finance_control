@@ -48,8 +48,6 @@ const walletsSlice = createSlice({
     initialState,
     reducers: {
         createWallet: (state, action: PayloadAction<IWallet>) => {
-            console.log('state', state);
-
             state.wallets.push(action.payload);
         },
 

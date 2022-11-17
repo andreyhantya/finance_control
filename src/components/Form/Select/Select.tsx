@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Formik, Form, Field } from 'formik';
+import FieldWrapper from '../FieldWrapper/FieldWrapper';
 
 interface IItem {
     value: string;
@@ -20,6 +21,12 @@ interface IFormSelectProps {
     children: any;
     field: any;
     form: any;
+}
+
+interface ICustomSelectProps {
+    children: React.ReactNode;
+    name: string;
+    id: string;
 }
 
 const FormSelect = ({ field, form, children }: IFormSelectProps) => {
@@ -39,4 +46,16 @@ const FormSelect = ({ field, form, children }: IFormSelectProps) => {
     );
 };
 
-export default FormSelect;
+const CustomSelect = ({ children, name, id }: ICustomSelectProps) => {
+    return (
+        <FieldWrapper>
+            <FormControl fullWidth={true}>
+                <Field name={name} id={id} component={FormSelect}>
+                    {children}
+                </Field>
+            </FormControl>
+        </FieldWrapper>
+    );
+};
+
+export default CustomSelect;

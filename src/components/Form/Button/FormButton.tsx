@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import FieldWrapper from '../FieldWrapper/FieldWrapper';
 
 interface IButtonProps {
     value: string;
-    handlerClick: () => void;
+    handlerClick?: () => void;
     variant?: 'text' | 'contained' | 'outlined';
     spacing?: number;
     direction?: 'row' | 'column';
@@ -22,11 +23,13 @@ const FormButton = ({
     type,
 }: IButtonProps) => {
     return (
-        <Stack spacing={spacing} direction={direction}>
-            <Button type={type} variant={variant} color={color} onClick={handlerClick}>
-                {value}
-            </Button>
-        </Stack>
+        <FieldWrapper>
+            <Stack spacing={spacing} direction={direction}>
+                <Button type={type} variant={variant} color={color} onClick={handlerClick}>
+                    {value}
+                </Button>
+            </Stack>
+        </FieldWrapper>
     );
 };
 

@@ -7,22 +7,12 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Formik, Field } from 'formik';
 import { createWallet } from '../../store/slices/walletDataSlice';
 import { MenuItem, NativeSelect, InputLabel, FormControl } from '@mui/material';
+import FieldWrapper from '@src/components/Form/FieldWrapper/FieldWrapper';
+import { currencies } from '@src/utils/Helpers/Data';
 
 const CreateWallet = () => {
     const dispatch = useAppDispatch();
     const [walletIdCount, setWalletIdCount] = useState(0);
-    const currencies = [
-        {
-            value: 'USD',
-            label: 'USD',
-            id: 1,
-        },
-        {
-            value: 'EUR',
-            label: 'EUR',
-            id: 2,
-        },
-    ];
 
     const clickButton = () => {};
 
@@ -52,16 +42,7 @@ const CreateWallet = () => {
                             createWallett(values);
                         }, 400);
                     }}>
-                    {({
-                        values,
-                        errors,
-                        touched,
-
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        isSubmitting,
-                    }) => (
+                    {({ handleChange, handleBlur, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
                             <FormControl fullWidth={true}>
                                 <Field name="currency" component={FormSelect}>
@@ -74,7 +55,7 @@ const CreateWallet = () => {
                                 width="100%"
                                 placeholder="Название кошелька"
                                 onChange={handleChange}
-                                margin={0}
+                                margin={1}
                                 onBlur={handleBlur}
                                 id="walletName"
                             />

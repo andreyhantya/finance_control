@@ -5,18 +5,13 @@ import FormTextField from '@src/components/Form/TextField/FormTextField';
 import { CreateWalletWrapper, FormWrapper } from './StyledAddExpenseForm';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { Formik, Field } from 'formik';
-import {
-    createWallet,
-    walletData,
-    walletDataSelector,
-    addExpense,
-} from '../../../store/slices/walletDataSlice';
+import { walletDataSelector, addExpense } from '../../../store/slices/walletDataSlice';
 import { MenuItem, NativeSelect, InputLabel, FormControl } from '@mui/material';
 import { Dayjs } from 'dayjs';
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import FieldWrapper from '@src/components/Form/FieldWrapper/FieldWrapper';
+import DateField from '@src/components/Form/Date/DateField';
+import CustomSelect from '@src/components/Form/Select/Select';
+import { categories } from '@src/utils/Helpers/Data';
 
 interface IExpense {
     category: string;
@@ -34,41 +29,17 @@ interface IExpenseData {
     comment?: string;
 }
 
-interface ICategories {
-    value: string;
-    label: string;
-    id: number;
-}
-
 const AddExpenseForm = () => {
     const dispatch = useAppDispatch();
     const walletsData = useAppSelector(walletDataSelector.getWalletData);
-
-    const [value, setValue] = React.useState<Dayjs | null>(null);
-
-    const categories: ICategories[] = [
-        {
-            value: 'goods',
-            label: 'goods',
-            id: 1,
-        },
-        {
-            value: 'entertainment',
-            label: 'entertainment',
-            id: 2,
-        },
-    ];
-
-    const clickButton = () => {};
+    const [dateValue, setDateValue] = React.useState<Dayjs | null>(null);
 
     const addExpenseInStore = (data: IExpenseData) => {
-        console.log('data.walletName', data);
-
         const { walletName, expense, comment, category } = data;
 
         const expensToStore: IExpense = {
             walletName: walletName,
-            date: value,
+            date: dateValue,
             expense: expense,
             comment: comment,
             category: category,
@@ -83,22 +54,19 @@ const AddExpenseForm = () => {
                 <Formik
                     initialValues={{ walletName: '', expense: 0, comment: '', category: '' }}
                     onSubmit={(values, { setSubmitting }) => {
-                        setTimeout(() => {
-                            setSubmitting(false);
-                            addExpenseInStore(values);
-                        }, 0);
+                        setSubmitting(false);
+                        addExpenseInStore(values);
                     }}>
                     {({ handleChange, handleBlur, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <FormControl fullWidth={true}>
-                                <Field name="walletName" component={FormSelect}>
-                                    {walletsData.wallets.map((elem, idx: number) => (
-                                        <MenuItem key={idx} value={elem.name}>
-                                            {elem.name}
-                                        </MenuItem>
-                                    ))}
-                                </Field>
-                            </FormControl>
+                            <CustomSelect name="walletName" id="walletName">
+                                {walletsData.wallets.map((elem, idx: number) => (
+                                    <MenuItem key={idx} value={elem.name}>
+                                        {elem.name}
+                                    </MenuItem>
+                                ))}
+                            </CustomSelect>
+
                             <FormTextField
                                 width="100%"
                                 placeholder="Сумма"
@@ -107,15 +75,13 @@ const AddExpenseForm = () => {
                                 onBlur={handleBlur}
                                 id="expense"
                             />
-                            <FormControl fullWidth={true}>
-                                <Field name="category" id="category" component={FormSelect}>
-                                    {categories.map((elem, idx) => (
-                                        <MenuItem key={idx} value={elem.value}>
-                                            {elem.value}
-                                        </MenuItem>
-                                    ))}
-                                </Field>
-                            </FormControl>
+                            <CustomSelect name="category" id="category">
+                                {categories.map((elem, idx) => (
+                                    <MenuItem key={idx} value={elem.value}>
+                                        {elem.value}
+                                    </MenuItem>
+                                ))}
+                            </CustomSelect>
                             <FormTextField
                                 width="100%"
                                 placeholder="Комментарий"
@@ -124,22 +90,11 @@ const AddExpenseForm = () => {
                                 onBlur={handleBlur}
                                 id="comment"
                             />
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker
-                                    label="Дата"
-                                    value={value}
-                                    onChange={(newValue) => {
-                                        setValue(newValue);
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </LocalizationProvider>
-                            <FormButton
-                                type="submit"
-                                value="Добавить расход"
-                                spacing={3}
-                                handlerClick={() => clickButton()}
-                            />
+                            <FieldWrapper>
+                                <DateField dateValue={dateValue} setDateValue={setDateValue} />
+                            </FieldWrapper>
+
+                            <FormButton type="submit" value="Добавить расход" spacing={3} />
                         </form>
                     )}
                 </Formik>

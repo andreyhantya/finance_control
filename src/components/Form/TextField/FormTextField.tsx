@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { StyledInput, InputWrapper } from './StyledTextInput';
 
 interface IFormTextFieldProps {
     placeholder: string;
@@ -30,7 +31,9 @@ const FormTextField = ({
         //     }}
         //     noValidate
         //     autoComplete={autoComplete}>
-        <TextField id={id} onChange={onChange} label={placeholder} variant={variant} />
+        <InputWrapper>
+            <StyledInput id={id} onChange={onChange} label={placeholder} variant={variant} />
+        </InputWrapper>
         // </Box>
     );
 };
