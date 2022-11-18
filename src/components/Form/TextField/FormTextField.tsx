@@ -1,13 +1,13 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import { StyledInput, InputWrapper } from './StyledTextInput';
 
 interface IFormTextFieldProps {
     placeholder: string;
     onChange: (e: React.ChangeEvent<any>) => void;
-    onBlur: (e: React.FocusEvent<any>) => void;
+    handleBlur: (e: React.FocusEvent<any>) => void;
     id: string;
+    errorData: boolean;
+    name: string;
     variant?: 'outlined' | 'filled' | 'standard';
     width?: string;
     margin?: number;
@@ -21,21 +21,25 @@ const FormTextField = ({
     placeholder,
     autoComplete = 'off',
     onChange,
+    name,
     id,
+    handleBlur,
+    errorData,
 }: IFormTextFieldProps) => {
     return (
-        // <Box
-        //     component="form"
-        //     sx={{
-        //         '& > :not(style)': { m: margin, width: width },
-        //     }}
-        //     noValidate
-        //     autoComplete={autoComplete}>
         <InputWrapper>
-            <StyledInput id={id} onChange={onChange} label={placeholder} variant={variant} />
+            <StyledInput
+                id={id}
+                error={!!errorData}
+                onChange={onChange}
+                label={errorData ? errorData : placeholder}
+                name={name}
+                value={null}
+                variant={variant}
+                onBlur={handleBlur}
+            />
         </InputWrapper>
-        // </Box>
     );
 };
 
-export default FormTextField;
+export default React.memo(FormTextField);

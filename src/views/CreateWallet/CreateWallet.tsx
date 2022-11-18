@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
 import FormButton from '../../components/Form/Button/FormButton';
-import FormSelect from '../../components/Form/Select/Select';
 import FormTextField from '../../components/Form/TextField/FormTextField';
 import { CreateWalletWrapper, FormWrapper } from './StyledCreateWallet';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Formik, Field } from 'formik';
-import { createWallet } from '../../store/slices/walletDataSlice';
+import { createWallet, walletDataSelector } from '../../store/slices/walletDataSlice';
 import { MenuItem, NativeSelect, InputLabel, FormControl } from '@mui/material';
-import FieldWrapper from '@src/components/Form/FieldWrapper/FieldWrapper';
 import { currencies } from '@src/utils/Helpers/Data';
+import CustomSelect from '../../components/Form/Select/Select';
+import { createWalletSchema } from '@src/utils/Helpers/validationSchemas';
+
+interface ICreateWalletProps {
+    walletName: string;
+    currency: string;
+    walletStartSum: string;
+}
 
 const CreateWallet = () => {
     const dispatch = useAppDispatch();
+    const { wallets } = useAppSelector(walletDataSelector.getWalletData);
+    console.log('🚀 ~ file: CreateWallet.tsx ~ line 15 ~ CreateWal ~ wallets', wallets);
+
     const [walletIdCount, setWalletIdCount] = useState(0);
 
     const clickButton = () => {};
 
-    const createWallett = (data) => {
+    const checkWalletName = (newWalletName: string) => {
+        return wallets.some((elem) => elem.name === newWalletName);
+    };
+
+    const createWallett = (data: ICreateWalletProps) => {
+        console.log('🚀 ~ file: CreateWallet.tsx ~ line 27 ~ createWallett ~ data', data);
+        const isDoplicateName = checkWalletName(data.walletName);
+        if (isDoplicateName) {
+            return alert('Такое имя кошелька уже существует, придумайте другое');
+        }
+
         const wallet = {
             name: data.walletName,
             currency: data.currency,
@@ -34,40 +53,38 @@ const CreateWallet = () => {
             <h2>Создайте кошелёк</h2>
             <FormWrapper>
                 <Formik
-                    initialValues={{ walletName: '', currency: 'USD', walletStartSum: 0 }}
+                    initialValues={{ walletName: '', currency: 'USD', walletStartSum: '' }}
+                    validateOnBlur={true}
+                    validationSchema={createWalletSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        setTimeout(() => {
-                            alert(JSON.stringify(values, null, 2));
-                            setSubmitting(false);
-                            createWallett(values);
-                        }, 400);
+                        setSubmitting(false);
+                        createWallett(values);
                     }}>
-                    {({ handleChange, handleBlur, handleSubmit }) => (
+                    {({ errors, touched, handleChange, handleBlur, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <FormControl fullWidth={true}>
-                                <Field name="currency" component={FormSelect}>
-                                    {currencies.map((elem) => (
-                                        <MenuItem value={elem.value}>{elem.value}</MenuItem>
-                                    ))}
-                                </Field>
-                            </FormControl>
+                            <CustomSelect name="currency" id="currency">
+                                {currencies.map((elem) => (
+                                    <MenuItem value={elem.value}>{elem.value}</MenuItem>
+                                ))}
+                            </CustomSelect>
                             <FormTextField
+                                errorData={touched.walletName && errors.walletName}
                                 width="100%"
                                 placeholder="Название кошелька"
                                 onChange={handleChange}
-                                margin={1}
-                                onBlur={handleBlur}
+                                handleBlur={handleBlur}
                                 id="walletName"
+                                name="walletName"
                             />
                             <FormTextField
+                                errorData={touched.walletStartSum && errors.walletStartSum}
                                 width="100%"
-                                margin={0}
                                 placeholder="Начальная сумма"
                                 onChange={handleChange}
-                                onBlur={handleBlur}
+                                handleBlur={handleBlur}
                                 id="walletStartSum"
+                                name="walletStartSum"
                             />
-
                             <FormButton
                                 type="submit"
                                 value="Готово"

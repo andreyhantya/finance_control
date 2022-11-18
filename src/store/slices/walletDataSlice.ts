@@ -10,7 +10,7 @@ interface IExpense {
 }
 
 interface IIncoming {
-    sum: number;
+    sum: string;
     category: string;
     date: Date;
     walletName: string;
@@ -18,7 +18,7 @@ interface IIncoming {
 
 interface IWallet {
     name: string;
-    sum: number;
+    sum: string;
     expense?: IExpense[];
     incoming?: IIncoming[];
     currency: string;
@@ -34,7 +34,7 @@ const initialState: IWallets = {
     wallets: [
         {
             name: 'Test wallet',
-            sum: 200,
+            sum: '200',
             currency: 'USD',
             date: JSON.stringify(new Date()),
             id: 'string',
