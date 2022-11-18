@@ -53,7 +53,6 @@ const walletsSlice = createSlice({
 
         addExpense: (state, action: PayloadAction<IWallet>) => {
             const { walletName, expense } = action.payload;
-            console.log('state.wallets', action.payload);
 
             current(state).wallets.map((elem, idx) => {
                 if (elem.name === walletName) {
